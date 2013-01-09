@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_main_vehicless"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/menu_main_vehicless"/>
+    <item
+        android:id="@+id/menu_main_stations"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/menu_main_stations"/>
+    
+</menu>
