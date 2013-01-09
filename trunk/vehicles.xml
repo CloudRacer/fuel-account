@@ -1,0 +1,12 @@
+<vehicles>
+    <vehicle>
+        <manufacturer>Citroen</manufacturer>
+        <model>C5</model>
+        <registration>VU04 VCF</registration>
+    </vehicle>
+    <vehicle>
+        <manufacturer>Ford</manufacturer>
+        <model>Mondeo</model>
+        <registration>UKN01</registration>
+    </vehicle>
+</vehicles>
