@@ -14,29 +14,13 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="uk.org.mcdonnell.fuelaccount.MainActivity"
+            android:name="MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="uk.org.mcdonnell.fuelaccount.DisplayMessgeActivity"
-            android:label="@string/title_activity_display_message"
-            android:parentActivityName="uk.org.mcdonnell.fuelaccount.VehicleActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="uk.org.mcdonnell.fuelaccount.VehicleActivity" />
-        </activity>
-        <activity
-            android:name="uk.org.mcdonnell.fuelaccount.DisplayMessageActivity"
-            android:label="@string/title_activity_display_message"
-            android:parentActivityName="uk.org.mcdonnell.fuelaccount.VehicleActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="uk.org.mcdonnell.fuelaccount.VehicleActivity" />
         </activity>
     </application>
 
