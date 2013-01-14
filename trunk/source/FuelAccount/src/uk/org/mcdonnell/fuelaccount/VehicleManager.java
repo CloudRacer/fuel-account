@@ -1,14 +1,12 @@
 package uk.org.mcdonnell.fuelaccount;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.ListIterator;
 
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -43,15 +41,16 @@ public class VehicleManager extends VehiclesType {
 
     public List<VehicleType> getVehicle() {
         if (vehicles == null) {
-            vehicle = super.getVehicle();
+            vehicles = super.getVehicle();
 
             // Load the XML File.
+            FileInputStream fileInputStream = null;
             try {
-                FileInputStream fileInputStream = getContext().openFileInput(
-                        Configuration.getVehiclesFile());
-
                 if (getContext().getFileStreamPath(
                         Configuration.getVehiclesFile()).exists()) {
+                    fileInputStream = getContext().openFileInput(
+                            Configuration.getVehiclesFile());
+
                     VehicleType vehicleType = null;
                     XmlPullParserFactory factory = XmlPullParserFactory
                             .newInstance();
@@ -61,32 +60,43 @@ public class VehicleManager extends VehiclesType {
                     xmlPullParser.setInput(fileInputStream, ENCODING);
                     int eventType = xmlPullParser.getEventType();
                     while (eventType != XmlPullParser.END_DOCUMENT) {
-                        if (eventType == XmlPullParser.START_DOCUMENT) {
-                            System.out.println("Start document");
-                        } else if (eventType == XmlPullParser.START_TAG) {
-                            if (xmlPullParser.getName().equalsIgnoreCase(
-                                    "vehicle")) {
-                                vehicleType = new ObjectFactory()
-                                        .createVehicleType();
-                            }
-                        } else if (eventType == XmlPullParser.END_TAG) {
-                            if (xmlPullParser.getName().equalsIgnoreCase(
-                                    "vehicle")) {
-                                addVehicle(vehicleType);
-                                vehicleType = null;
-                            }
-                        } else if (eventType == XmlPullParser.TEXT) {
-                            if (xmlPullParser.getName().equalsIgnoreCase(
-                                    "manufacturer")) {
-                                vehicleType.setManufacturer(xmlPullParser
-                                        .getText());
-                            } else if (xmlPullParser.getName()
-                                    .equalsIgnoreCase("model")) {
-                                vehicleType.setModel(xmlPullParser.getText());
-                            } else if (xmlPullParser.getName()
-                                    .equalsIgnoreCase("registration")) {
-                                vehicleType.setRegistration(xmlPullParser
-                                        .getText());
+                        if (eventType != XmlPullParser.START_DOCUMENT) {
+                            if (eventType == XmlPullParser.START_TAG) {
+                                if (xmlPullParser.getName().equalsIgnoreCase(
+                                        "vehicle")) {
+                                    vehicleType = new ObjectFactory()
+                                            .createVehicleType();
+                                } else if (xmlPullParser.getName()
+                                        .equalsIgnoreCase("manufacturer")) {
+                                    // Go to the element content.
+                                    eventType = xmlPullParser.next();
+                                    vehicleType.setManufacturer(xmlPullParser
+                                            .getText());
+                                    // Go to the closing tag.
+                                    eventType = xmlPullParser.next();
+                                } else if (xmlPullParser.getName()
+                                        .equalsIgnoreCase("model")) {
+                                    // Go to the element content.
+                                    eventType = xmlPullParser.next();
+                                    vehicleType.setModel(xmlPullParser
+                                            .getText());
+                                    // Go to the closing tag.
+                                    eventType = xmlPullParser.next();
+                                } else if (xmlPullParser.getName()
+                                        .equalsIgnoreCase("registration")) {
+                                    // Go to the element content.
+                                    eventType = xmlPullParser.next();
+                                    vehicleType.setRegistration(xmlPullParser
+                                            .getText());
+                                    // Go to the closing tag.
+                                    eventType = xmlPullParser.next();
+                                }
+                            } else if (eventType == XmlPullParser.END_TAG) {
+                                if (xmlPullParser.getName().equalsIgnoreCase(
+                                        "vehicle")) {
+                                    addVehicle(vehicleType);
+                                    vehicleType = null;
+                                }
                             }
                         }
 
@@ -100,20 +110,22 @@ public class VehicleManager extends VehiclesType {
                         }
                     }
                 }
-            } catch (FileNotFoundException e) {
-                Log.e(this.getClass().getName(),
-                        "Error occurred while saving.", e);
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG)
-                        .show();
-            } catch (XmlPullParserException e) {
+            } catch (Exception e) {
                 Log.e(this.getClass().getName(),
                         "Error occurred while saving.", e);
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG)
                         .show();
             }
+            /*
+             * } finally { try { if (fileInputStream != null) {
+             * fileInputStream.close(); } } catch (IOException e) {
+             * Log.e(this.getClass().getName(), "Error occurred while saving.",
+             * e); Toast.makeText(getContext(), e.getMessage(),
+             * Toast.LENGTH_LONG).show(); }
+             */
         }
 
-        return vehicle;
+        return vehicles;
     }
 
     public VehicleType getVehicle(VehicleType vehicleType) {
@@ -128,7 +140,9 @@ public class VehicleManager extends VehiclesType {
             ListIterator<VehicleType> list = vehicles.listIterator();
             while (list.hasNext() && vehicle == null) {
                 VehicleType entry = list.next();
-                if (entry.getRegistration().equalsIgnoreCase(registration)) {
+                if (entry.getRegistration() != null
+                        && entry.getRegistration().equalsIgnoreCase(
+                                registration)) {
                     vehicle = entry;
                 }
             }
@@ -167,17 +181,26 @@ public class VehicleManager extends VehiclesType {
             while (list.hasNext()) {
                 VehicleType entry = list.next();
 
-                serializer.startTag(null, "vehicle");
-                serializer.startTag(null, "manufacturer");
-                serializer.text(entry.getManufacturer());
-                serializer.endTag(null, "manufacturer");
-                serializer.startTag(null, "Model");
-                serializer.text(entry.getModel());
-                serializer.endTag(null, "Model");
-                serializer.startTag(null, "registration");
-                serializer.text(entry.getRegistration());
-                serializer.endTag(null, "registration");
-                serializer.endTag(null, "vehicle");
+                if (entry.getRegistration() != null
+                        && entry.getRegistration().toString().length() != 0) {
+                    serializer.startTag(null, "vehicle");
+                    serializer.startTag(null, "manufacturer");
+                    if (entry.getManufacturer() != null
+                            && entry.getManufacturer().toString().length() != 0) {
+                        serializer.text(entry.getManufacturer());
+                    }
+                    serializer.endTag(null, "manufacturer");
+                    serializer.startTag(null, "Model");
+                    if (entry.getModel() != null
+                            && entry.getModel().toString().length() != 0) {
+                        serializer.text(entry.getModel());
+                    }
+                    serializer.endTag(null, "Model");
+                    serializer.startTag(null, "registration");
+                    serializer.text(entry.getRegistration());
+                    serializer.endTag(null, "registration");
+                    serializer.endTag(null, "vehicle");
+                }
             }
         }
 

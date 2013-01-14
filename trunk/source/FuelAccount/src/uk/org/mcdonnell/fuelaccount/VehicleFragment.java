@@ -60,7 +60,8 @@ public class VehicleFragment extends Fragment {
                         vehicleType.setModel(getModel().getText().toString());
                         vehicleType.setRegistration(getRegistration().getText()
                                 .toString());
-                        getVehicleManager().save(getView().getContext(), vehicleType);
+                        getVehicleManager().save(getView().getContext(),
+                                vehicleType);
                     } catch (Exception e) {
                         Log.e(this.getClass().getName(),
                                 "Error occurred while saving.", e);
