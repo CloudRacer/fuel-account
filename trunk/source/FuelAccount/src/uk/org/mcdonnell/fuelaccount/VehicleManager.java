@@ -152,15 +152,19 @@ public class VehicleManager extends VehiclesType {
     }
 
     private void addVehicle(VehicleType vehicleType) {
-        getVehicle().add(vehicleType);
+        if (getVehicle(vehicleType) == null) {
+            super.getVehicle().add(vehicleType);
+        } else {
+            getVehicle(vehicleType).setManufacturer(
+                    vehicleType.getManufacturer());
+            getVehicle(vehicleType).setModel(vehicleType.getModel());
+        }
     }
 
     public void save(Context context, VehicleType vehicleType) throws Exception {
-        if (getVehicle(vehicleType) == null) {
-            super.getVehicle().add(vehicleType);
+        addVehicle(vehicleType);
 
-            save(context);
-        }
+        save(context);
     }
 
     public void save(Context context) throws IOException {
