@@ -1,6 +1,5 @@
 package uk.org.mcdonnell.fuelaccount;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -50,7 +49,8 @@ public class VehicleManager extends VehiclesType {
                 FileInputStream fileInputStream = getContext().openFileInput(
                         Configuration.getVehiclesFile());
 
-                if (new File(Configuration.getVehiclesFile()).exists()) {
+                if (getContext().getFileStreamPath(
+                        Configuration.getVehiclesFile()).exists()) {
                     XmlPullParserFactory factory = XmlPullParserFactory
                             .newInstance();
                     factory.setNamespaceAware(true);
@@ -115,17 +115,19 @@ public class VehicleManager extends VehiclesType {
         return vehicle;
     }
 
-    public void save(VehicleType vehicleType) throws Exception {
+    public void save(Context context, VehicleType vehicleType) throws Exception {
         VehicleType existingVehicle = getVehicle(vehicleType.getRegistration());
         if (existingVehicle == null) {
             super.getVehicle().add(vehicleType);
 
-            save();
+            save(context);
         }
     }
 
-    public void save() throws IOException {
-        FileOutputStream outputStream = getContext().openFileOutput(
+    public void save(Context context) throws IOException {
+        // FileOutputStream outputStream = getContext().openFileOutput(
+        // Configuration.getVehiclesFile(), Context.MODE_PRIVATE);
+        FileOutputStream outputStream = context.openFileOutput(
                 Configuration.getVehiclesFile(), Context.MODE_PRIVATE);
 
         XmlSerializer serializer = Xml.newSerializer();
@@ -161,5 +163,4 @@ public class VehicleManager extends VehiclesType {
         serializer.flush();
         outputStream.close();
     }
-
 }

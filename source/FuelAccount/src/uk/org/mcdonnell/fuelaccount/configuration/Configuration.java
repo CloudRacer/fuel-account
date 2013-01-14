@@ -3,6 +3,7 @@ package uk.org.mcdonnell.fuelaccount.configuration;
 import java.io.FileNotFoundException;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 
 public class Configuration {
 
@@ -11,13 +12,15 @@ public class Configuration {
     }
 
     @SuppressLint("DefaultLocale")
-    public static String getVehiclesFile() throws FileNotFoundException {
-        return FileNames.VEHICLES.toString().toLowerCase();
+    public static String getVehiclesFile()
+            throws FileNotFoundException {
+        return String.format("%s.%s", FileNames.VEHICLES.toString()
+                .toLowerCase(), "xml");
     }
 
     @SuppressLint("DefaultLocale")
     public static String getStationsFile() {
-        return FileNames.STATIONS.toString().toLowerCase();
+        return String.format("%s.%s", FileNames.STATIONS.toString()
+                .toLowerCase(), "xml");
     }
-
 }
