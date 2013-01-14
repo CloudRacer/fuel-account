@@ -16,6 +16,49 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // ********** FOR TESTING ONLY **********
+        try {
+            String FILENAME = "TEST";
+            //String string = "hello world!";
+
+            // deleteFile(FILENAME);
+            // deleteFile(uk.org.mcdonnell.fuelaccount.configuration.Configuration
+            // .getStationsFile());
+            // deleteFile(uk.org.mcdonnell.fuelaccount.configuration.Configuration
+            // .getVehiclesFile());
+
+            System.out.println("Application File Count:" + fileList().length
+                    + ".");
+
+            // FileOutputStream fos;
+            if (getFileStreamPath(FILENAME).exists()) {
+                System.out.println("EXISTS");
+            } else {
+                System.out.println("NOT EXIST");
+            }
+            // fos = getApplicationContext().openFileOutput(FILENAME,
+            // Context.MODE_PRIVATE);
+            // fos.write(string.getBytes());
+            // fos.close();
+            if (getFileStreamPath(FILENAME).exists()) {
+                System.out.println("EXIST");
+            } else {
+                System.out.println("NOT EXIST");
+            }
+
+            deleteFile(FILENAME);
+            // deleteFile(uk.org.mcdonnell.fuelaccount.configuration.Configuration
+            // .getStationsFile());
+            // deleteFile(uk.org.mcdonnell.fuelaccount.configuration.Configuration
+            // .getVehiclesFile());
+
+            System.out.println("Application File Count:" + fileList().length
+                    + ".");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
         if (findViewById(R.id.fragment_container) != null) {

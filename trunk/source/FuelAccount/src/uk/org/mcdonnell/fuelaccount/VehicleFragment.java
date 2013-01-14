@@ -1,5 +1,7 @@
 package uk.org.mcdonnell.fuelaccount;
 
+import java.util.ArrayList;
+
 import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class VehicleFragment extends Fragment {
@@ -27,6 +30,7 @@ public class VehicleFragment extends Fragment {
     private EditText registration;
 
     private VehicleManager vehicleManager;
+    private VehicleAdapter vehicleAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,10 +55,12 @@ public class VehicleFragment extends Fragment {
                 if (activity != null) {
                     try {
                         VehicleType vehicleType = new VehicleType();
-                        vehicleType.setManufacturer(getManufacturer().getText().toString());
+                        vehicleType.setManufacturer(getManufacturer().getText()
+                                .toString());
                         vehicleType.setModel(getModel().getText().toString());
-                        vehicleType.setRegistration(getRegistration().getText().toString());
-                        getVehicleManager().save(vehicleType);
+                        vehicleType.setRegistration(getRegistration().getText()
+                                .toString());
+                        getVehicleManager().save(getView().getContext(), vehicleType);
                     } catch (Exception e) {
                         Log.e(this.getClass().getName(),
                                 "Error occurred while saving.", e);
@@ -117,6 +123,18 @@ public class VehicleFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Bind the list to the XML.
+        vehicleAdapter = new VehicleAdapter(this.getView().getContext(),
+                R.layout.row, (ArrayList<VehicleType>) getVehicleManager()
+                        .getVehicle());
+        ListView list = (ListView) getView().findViewById(R.id.listVehicles);
+        list.setAdapter(vehicleAdapter);
     }
 
     @Override
