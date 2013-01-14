@@ -13,6 +13,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
 import uk.org.mcdonnell.fuelaccount.configuration.Configuration;
+import uk.org.mcdonnell.fuelaccount.schemas.ObjectFactory;
 import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
 import uk.org.mcdonnell.fuelaccount.schemas.VehiclesType;
 import android.content.Context;
@@ -51,6 +52,7 @@ public class VehicleManager extends VehiclesType {
 
                 if (getContext().getFileStreamPath(
                         Configuration.getVehiclesFile()).exists()) {
+                    VehicleType vehicleType = null;
                     XmlPullParserFactory factory = XmlPullParserFactory
                             .newInstance();
                     factory.setNamespaceAware(true);
@@ -62,15 +64,32 @@ public class VehicleManager extends VehiclesType {
                         if (eventType == XmlPullParser.START_DOCUMENT) {
                             System.out.println("Start document");
                         } else if (eventType == XmlPullParser.START_TAG) {
-                            System.out.println("Start tag "
-                                    + xmlPullParser.getName());
+                            if (xmlPullParser.getName().equalsIgnoreCase(
+                                    "vehicle")) {
+                                vehicleType = new ObjectFactory()
+                                        .createVehicleType();
+                            }
                         } else if (eventType == XmlPullParser.END_TAG) {
-                            System.out.println("End tag "
-                                    + xmlPullParser.getName());
+                            if (xmlPullParser.getName().equalsIgnoreCase(
+                                    "vehicle")) {
+                                addVehicle(vehicleType);
+                                vehicleType = null;
+                            }
                         } else if (eventType == XmlPullParser.TEXT) {
-                            System.out.println("Text "
-                                    + xmlPullParser.getText());
+                            if (xmlPullParser.getName().equalsIgnoreCase(
+                                    "manufacturer")) {
+                                vehicleType.setManufacturer(xmlPullParser
+                                        .getText());
+                            } else if (xmlPullParser.getName()
+                                    .equalsIgnoreCase("model")) {
+                                vehicleType.setModel(xmlPullParser.getText());
+                            } else if (xmlPullParser.getName()
+                                    .equalsIgnoreCase("registration")) {
+                                vehicleType.setRegistration(xmlPullParser
+                                        .getText());
+                            }
                         }
+
                         try {
                             eventType = xmlPullParser.next();
                         } catch (IOException e) {
@@ -80,7 +99,6 @@ public class VehicleManager extends VehiclesType {
                                     Toast.LENGTH_LONG).show();
                         }
                     }
-                    System.out.println("End document");
                 }
             } catch (FileNotFoundException e) {
                 Log.e(this.getClass().getName(),
@@ -117,6 +135,10 @@ public class VehicleManager extends VehiclesType {
         }
 
         return vehicle;
+    }
+
+    private void addVehicle(VehicleType vehicleType) {
+        getVehicle().add(vehicleType);
     }
 
     public void save(Context context, VehicleType vehicleType) throws Exception {
