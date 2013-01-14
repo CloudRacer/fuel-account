@@ -3,7 +3,6 @@ package uk.org.mcdonnell.fuelaccount.configuration;
 import java.io.FileNotFoundException;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 
 public class Configuration {
 

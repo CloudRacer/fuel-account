@@ -98,6 +98,10 @@ public class VehicleManager extends VehiclesType {
         return vehicle;
     }
 
+    public VehicleType getVehicle(VehicleType vehicleType) {
+        return getVehicle(vehicleType.getRegistration());
+    }
+
     public VehicleType getVehicle(String registration) {
         VehicleType vehicle = null;
 
@@ -116,8 +120,7 @@ public class VehicleManager extends VehiclesType {
     }
 
     public void save(Context context, VehicleType vehicleType) throws Exception {
-        VehicleType existingVehicle = getVehicle(vehicleType.getRegistration());
-        if (existingVehicle == null) {
+        if (getVehicle(vehicleType) == null) {
             super.getVehicle().add(vehicleType);
 
             save(context);
@@ -125,8 +128,6 @@ public class VehicleManager extends VehiclesType {
     }
 
     public void save(Context context) throws IOException {
-        // FileOutputStream outputStream = getContext().openFileOutput(
-        // Configuration.getVehiclesFile(), Context.MODE_PRIVATE);
         FileOutputStream outputStream = context.openFileOutput(
                 Configuration.getVehiclesFile(), Context.MODE_PRIVATE);
 
