@@ -29,7 +29,7 @@ public class StationFragment extends Fragment {
             }
         });
 
-        Button button = (Button) view.findViewById(R.id.button_done_station);
+        Button button = (Button) view.findViewById(R.id.button_save_station);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
