@@ -34,7 +34,7 @@
         </Button>
 
         <Button
-            android:id="@+id/button_done_station"
+            android:id="@+id/button_save_station"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="doneStation"
