@@ -74,17 +74,6 @@ public class MainActivity extends FragmentActivity {
             if (savedInstanceState != null) {
                 return;
             }
-
-            // Create an instance of ExampleFragment
-            // VehicleFragment vehicleFragment = new VehicleFragment();
-
-            // In case this activity was started with special instructions from
-            // an Intent, pass the Intent's extras to the fragment as arguments.
-            // vehicleFragment.setArguments(getIntent().getExtras());
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            // getSupportFragmentManager().beginTransaction()
-            // .add(R.id.fragment_container, vehicleFragment).commit();
         }
     }
 
