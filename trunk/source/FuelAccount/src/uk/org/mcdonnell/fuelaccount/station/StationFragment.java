@@ -37,9 +37,6 @@ public class StationFragment extends Fragment {
                 Activity activity = getActivity();
 
                 if (activity != null) {
-                    // Toast.makeText(activity,
-                    // R.string.toast_you_just_clicked_a_fragment,
-                    // Toast.LENGTH_LONG).show();
                     Toast.makeText(activity, "Button clicked!",
                             Toast.LENGTH_LONG).show();
                 }
