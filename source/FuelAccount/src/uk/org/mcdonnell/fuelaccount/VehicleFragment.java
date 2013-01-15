@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,11 +26,11 @@ import android.widget.Toast;
 public class VehicleFragment extends Fragment {
     private View view;
 
-    private Button doneButton;
-
     private EditText manufacturer;
     private EditText model;
     private EditText registration;
+    private Button doneButton;
+    private ListView listView;
 
     private VehicleManager vehicleManager;
     private VehicleAdapter vehicleAdapter;
@@ -127,6 +130,45 @@ public class VehicleFragment extends Fragment {
             }
         });
 
+        getListView().setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(android.widget.AdapterView<?> arg0,
+                    View arg1, int arg2, long arg3) {
+                getManufacturer().setText(
+                        ((VehicleType) arg0.getItemAtPosition(arg2))
+                                .getManufacturer());
+                getModel()
+                        .setText(
+                                ((VehicleType) arg0.getItemAtPosition(arg2))
+                                        .getModel());
+                getRegistration().setText(
+                        ((VehicleType) arg0.getItemAtPosition(arg2))
+                                .getRegistration());
+            };
+        });
+
+        getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                    int arg2, long arg3) {
+                try {
+                    getVehicleManager().deleteVehicle(
+                            getView().getContext(),
+                            ((VehicleType) arg0.getItemAtPosition(arg2))
+                                    .getRegistration());
+                    vehicleAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    Log.e(this.getClass().getName(),
+                            "Error occurred while deleting.", e);
+                    Toast.makeText(getActivity(), e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+
+                    return false;
+                }
+
+                return true;
+            }
+        });
+
         return view;
     }
 
@@ -186,6 +228,13 @@ public class VehicleFragment extends Fragment {
             doneButton = (Button) view.findViewById(R.id.button_save_vehicle);
         }
         return doneButton;
+    }
+
+    private ListView getListView() {
+        if (listView == null) {
+            listView = (ListView) view.findViewById(R.id.listVehicles);
+        }
+        return listView;
     }
 
     private void enableButton() {
