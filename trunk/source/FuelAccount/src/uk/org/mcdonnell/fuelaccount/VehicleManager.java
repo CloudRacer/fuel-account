@@ -165,6 +165,21 @@ public class VehicleManager extends VehiclesType {
         }
     }
 
+    public VehicleType deleteVehicle(Context context, String registration)
+            throws Exception {
+        VehicleType vehicle = getVehicle(registration);
+        if (vehicle == null) {
+            throw new Exception(String.format(
+                    "Cannot find detail of vehicle with registration %s.",
+                    registration));
+        } else {
+            getVehicle().remove(vehicle);
+            save(context);
+        }
+
+        return vehicle;
+    }
+
     public void save(Context context, VehicleType vehicleType)
             throws IllegalArgumentException, IllegalStateException, IOException {
         addVehicle(vehicleType);
