@@ -17,8 +17,7 @@
     <string name="station_petrol_company">Petrol Company</string>
     <string name="station_post_code">Post Code</string>
     <string name="button_add_station">Add</string>
-    <string name="button_done_station">Done</string>
+    <string name="button_save_station">Save</string>
     <!-- Message -->
-    <string name="menu_display_message_settings">Settings</string>
 
 </resources>

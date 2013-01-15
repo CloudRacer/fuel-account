@@ -180,7 +180,7 @@ public class VehicleFragment extends Fragment {
 
     private Button getDoneButton() {
         if (doneButton == null) {
-            doneButton = (Button) view.findViewById(R.id.button_done_vehicle);
+            doneButton = (Button) view.findViewById(R.id.button_save_vehicle);
         }
         return doneButton;
     }
