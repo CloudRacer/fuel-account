@@ -34,13 +34,12 @@ class VehicleAdapter extends ArrayAdapter<VehicleType> {
             TextView tt = (TextView) v.findViewById(R.id.toptext);
             TextView bt = (TextView) v.findViewById(R.id.bottomtext);
             if (tt != null) {
-                tt.setText("Name: "
-                        + String.format("%s, %s",
+                tt.setText(String.format("%s, %s",
                                 vehicleType.getManufacturer(),
                                 vehicleType.getModel()));
             }
             if (bt != null) {
-                bt.setText("Status: " + vehicleType.getRegistration());
+                bt.setText(vehicleType.getRegistration());
             }
         }
         return v;
