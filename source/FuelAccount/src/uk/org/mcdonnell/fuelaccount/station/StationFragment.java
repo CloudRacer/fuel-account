@@ -1,5 +1,6 @@
-package uk.org.mcdonnell.fuelaccount;
+package uk.org.mcdonnell.fuelaccount.station;
 
+import uk.org.mcdonnell.fuelaccount.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

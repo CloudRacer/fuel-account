@@ -1,4 +1,4 @@
-package uk.org.mcdonnell.fuelaccount;
+package uk.org.mcdonnell.fuelaccount.vehicle;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import uk.org.mcdonnell.fuelaccount.R;
 import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
 
 class VehicleAdapter extends ArrayAdapter<VehicleType> {
