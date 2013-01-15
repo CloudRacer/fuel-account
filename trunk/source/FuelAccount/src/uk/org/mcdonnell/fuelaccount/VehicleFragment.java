@@ -63,6 +63,9 @@ public class VehicleFragment extends Fragment {
                         getVehicleManager().save(getView().getContext(),
                                 vehicleType);
                         vehicleAdapter.notifyDataSetChanged();
+                        getManufacturer().setText(null);
+                        getModel().setText(null);
+                        getRegistration().setText(null);
                     } catch (Exception e) {
                         Log.e(this.getClass().getName(),
                                 "Error occurred while saving.", e);

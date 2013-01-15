@@ -165,13 +165,15 @@ public class VehicleManager extends VehiclesType {
         }
     }
 
-    public void save(Context context, VehicleType vehicleType) throws Exception {
+    public void save(Context context, VehicleType vehicleType)
+            throws IllegalArgumentException, IllegalStateException, IOException {
         addVehicle(vehicleType);
 
         save(context);
     }
 
-    public void save(Context context) throws IOException {
+    public void save(Context context) throws IllegalArgumentException,
+            IllegalStateException, IOException {
         FileOutputStream outputStream = context.openFileOutput(
                 Configuration.getVehiclesFile(), Context.MODE_PRIVATE);
 
