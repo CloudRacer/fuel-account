@@ -19,7 +19,7 @@ public class MainActivity extends FragmentActivity {
         // ********** FOR TESTING ONLY **********
         try {
             String FILENAME = "TEST";
-            //String string = "hello world!";
+            // String string = "hello world!";
 
             // deleteFile(FILENAME);
             // deleteFile(uk.org.mcdonnell.fuelaccount.configuration.Configuration
