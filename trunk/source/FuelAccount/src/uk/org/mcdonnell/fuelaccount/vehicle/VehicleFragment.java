@@ -1,7 +1,8 @@
-package uk.org.mcdonnell.fuelaccount;
+package uk.org.mcdonnell.fuelaccount.vehicle;
 
 import java.util.ArrayList;
 
+import uk.org.mcdonnell.fuelaccount.R;
 import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
 import android.app.Activity;
 import android.os.Bundle;

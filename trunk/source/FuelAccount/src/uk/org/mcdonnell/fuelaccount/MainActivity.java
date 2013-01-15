@@ -1,10 +1,14 @@
 package uk.org.mcdonnell.fuelaccount;
 
+import uk.org.mcdonnell.fuelaccount.station.StationFragment;
+import uk.org.mcdonnell.fuelaccount.vehicle.VehicleFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
     public final static String EXTRA_MESSAGE = "uk.org.mcdonnell.fuelaccount.MESSAGE";
@@ -55,8 +59,10 @@ public class MainActivity extends FragmentActivity {
             System.out.println("Application File Count:" + fileList().length
                     + ".");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.e(this.getClass().getName(),
+                    "Error occurred while saving.", e);
+            Toast.makeText(this, e.getMessage(),
+                    Toast.LENGTH_LONG).show();
         }
 
         // Check that the activity is using the layout version with
