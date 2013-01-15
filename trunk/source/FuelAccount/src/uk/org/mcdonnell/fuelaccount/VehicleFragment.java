@@ -32,8 +32,6 @@ public class VehicleFragment extends Fragment {
     private VehicleManager vehicleManager;
     private VehicleAdapter vehicleAdapter;
 
-    private Runnable viewVehicles;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
