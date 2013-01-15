@@ -22,7 +22,13 @@ import android.widget.Toast;
 
 public class VehicleManager extends VehiclesType {
 
+    private static final String ROOT_ELEMENT = "vehicles";
+    private static final String RECORD_ELEMENT = "vehicle";
+    private static final String REGISTRATION_ELEMENT = "registration";
+    private static final String MODEL_ELEMENT = "model";
+    private static final String MANUFACTURER_ELEMENT = "manufacturer";
     private static final String ENCODING = "UTF-8";
+
     private Context context;
 
     private List<VehicleType> vehicles = null;
@@ -63,11 +69,11 @@ public class VehicleManager extends VehiclesType {
                         if (eventType != XmlPullParser.START_DOCUMENT) {
                             if (eventType == XmlPullParser.START_TAG) {
                                 if (xmlPullParser.getName().equalsIgnoreCase(
-                                        "vehicle")) {
+                                        RECORD_ELEMENT)) {
                                     vehicleType = new ObjectFactory()
                                             .createVehicleType();
                                 } else if (xmlPullParser.getName()
-                                        .equalsIgnoreCase("manufacturer")) {
+                                        .equalsIgnoreCase(MANUFACTURER_ELEMENT)) {
                                     // Go to the element content.
                                     eventType = xmlPullParser.next();
                                     vehicleType.setManufacturer(xmlPullParser
@@ -75,7 +81,7 @@ public class VehicleManager extends VehiclesType {
                                     // Go to the closing tag.
                                     eventType = xmlPullParser.next();
                                 } else if (xmlPullParser.getName()
-                                        .equalsIgnoreCase("model")) {
+                                        .equalsIgnoreCase(MODEL_ELEMENT)) {
                                     // Go to the element content.
                                     eventType = xmlPullParser.next();
                                     vehicleType.setModel(xmlPullParser
@@ -83,7 +89,7 @@ public class VehicleManager extends VehiclesType {
                                     // Go to the closing tag.
                                     eventType = xmlPullParser.next();
                                 } else if (xmlPullParser.getName()
-                                        .equalsIgnoreCase("registration")) {
+                                        .equalsIgnoreCase(REGISTRATION_ELEMENT)) {
                                     // Go to the element content.
                                     eventType = xmlPullParser.next();
                                     vehicleType.setRegistration(xmlPullParser
@@ -93,21 +99,14 @@ public class VehicleManager extends VehiclesType {
                                 }
                             } else if (eventType == XmlPullParser.END_TAG) {
                                 if (xmlPullParser.getName().equalsIgnoreCase(
-                                        "vehicle")) {
+                                        RECORD_ELEMENT)) {
                                     addVehicle(vehicleType);
                                     vehicleType = null;
                                 }
                             }
                         }
 
-                        try {
-                            eventType = xmlPullParser.next();
-                        } catch (IOException e) {
-                            Log.e(this.getClass().getName(),
-                                    "Error occurred while saving.", e);
-                            Toast.makeText(getContext(), e.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
+                        eventType = xmlPullParser.next();
                     }
                 }
             } catch (Exception e) {
@@ -115,14 +114,19 @@ public class VehicleManager extends VehiclesType {
                         "Error occurred while saving.", e);
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG)
                         .show();
+
+            } finally {
+                try {
+                    if (fileInputStream != null) {
+                        fileInputStream.close();
+                    }
+                } catch (IOException e) {
+                    Log.e(this.getClass().getName(),
+                            "Error occurred while saving.", e);
+                    Toast.makeText(getContext(), e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
             }
-            /*
-             * } finally { try { if (fileInputStream != null) {
-             * fileInputStream.close(); } } catch (IOException e) {
-             * Log.e(this.getClass().getName(), "Error occurred while saving.",
-             * e); Toast.makeText(getContext(), e.getMessage(),
-             * Toast.LENGTH_LONG).show(); }
-             */
         }
 
         return vehicles;
@@ -177,7 +181,7 @@ public class VehicleManager extends VehiclesType {
         serializer.startDocument(null, Boolean.valueOf(true));
         serializer.setFeature(
                 "http://xmlpull.org/v1/doc/features.html#indent-output", true);
-        serializer.startTag(null, "vehicles");
+        serializer.startTag(null, ROOT_ELEMENT);
 
         List<VehicleType> vehicles = super.getVehicle();
         if (vehicles != null && !vehicles.isEmpty()) {
@@ -187,28 +191,28 @@ public class VehicleManager extends VehiclesType {
 
                 if (entry.getRegistration() != null
                         && entry.getRegistration().toString().length() != 0) {
-                    serializer.startTag(null, "vehicle");
-                    serializer.startTag(null, "manufacturer");
+                    serializer.startTag(null, RECORD_ELEMENT);
+                    serializer.startTag(null, MANUFACTURER_ELEMENT);
                     if (entry.getManufacturer() != null
                             && entry.getManufacturer().toString().length() != 0) {
                         serializer.text(entry.getManufacturer());
                     }
-                    serializer.endTag(null, "manufacturer");
+                    serializer.endTag(null, MANUFACTURER_ELEMENT);
                     serializer.startTag(null, "Model");
                     if (entry.getModel() != null
                             && entry.getModel().toString().length() != 0) {
                         serializer.text(entry.getModel());
                     }
                     serializer.endTag(null, "Model");
-                    serializer.startTag(null, "registration");
+                    serializer.startTag(null, REGISTRATION_ELEMENT);
                     serializer.text(entry.getRegistration());
-                    serializer.endTag(null, "registration");
-                    serializer.endTag(null, "vehicle");
+                    serializer.endTag(null, REGISTRATION_ELEMENT);
+                    serializer.endTag(null, RECORD_ELEMENT);
                 }
             }
         }
 
-        serializer.endTag(null, "vehicles");
+        serializer.endTag(null, ROOT_ELEMENT);
         serializer.endDocument();
         serializer.flush();
         outputStream.close();

@@ -32,7 +32,7 @@
             android:id="@+id/button_done_vehicle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="true"
+            android:enabled="false"
             android:text="@string/button_done_vehicle" >
         </Button>
     </LinearLayout>
