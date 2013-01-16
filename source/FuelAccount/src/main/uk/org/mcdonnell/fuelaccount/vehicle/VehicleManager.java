@@ -1,6 +1,8 @@
 package uk.org.mcdonnell.fuelaccount.vehicle;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -10,6 +12,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
+import uk.org.mcdonnell.fuelaccount.util.common.Filename;
 import uk.org.mcdonnell.fuelaccount.util.configuration.Configuration;
 import uk.org.mcdonnell.fuelaccount.schemas.ObjectFactory;
 import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
@@ -22,12 +25,13 @@ import android.widget.Toast;
 public class VehicleManager extends
         uk.org.mcdonnell.fuelaccount.schemas.VehiclesType {
 
-    private static final String ROOT_ELEMENT = "vehicles";
-    private static final String RECORD_ELEMENT = "vehicle";
     private static final String REGISTRATION_ELEMENT = "registration";
     private static final String MODEL_ELEMENT = "model";
     private static final String MANUFACTURER_ELEMENT = "manufacturer";
     private static final String ENCODING = "UTF-8";
+
+    private String recordElementName = null;
+    private String rootElementName = null;
 
     private Context context;
 
@@ -69,7 +73,7 @@ public class VehicleManager extends
                         if (eventType != XmlPullParser.START_DOCUMENT) {
                             if (eventType == XmlPullParser.START_TAG) {
                                 if (xmlPullParser.getName().equalsIgnoreCase(
-                                        RECORD_ELEMENT)) {
+                                        getRecordElementName())) {
                                     vehicleType = new ObjectFactory()
                                             .createVehicleType();
                                 } else if (xmlPullParser.getName()
@@ -99,7 +103,7 @@ public class VehicleManager extends
                                 }
                             } else if (eventType == XmlPullParser.END_TAG) {
                                 if (xmlPullParser.getName().equalsIgnoreCase(
-                                        RECORD_ELEMENT)) {
+                                        getRecordElementName())) {
                                     addVehicle(vehicleType);
                                     vehicleType = null;
                                 }
@@ -198,7 +202,7 @@ public class VehicleManager extends
         serializer.startDocument(null, Boolean.valueOf(true));
         serializer.setFeature(
                 "http://xmlpull.org/v1/doc/features.html#indent-output", true);
-        serializer.startTag(null, ROOT_ELEMENT);
+        serializer.startTag(null, getRootElementName());
 
         List<VehicleType> vehicles = super.getVehicle();
         if (vehicles != null && !vehicles.isEmpty()) {
@@ -208,30 +212,59 @@ public class VehicleManager extends
 
                 if (entry.getRegistration() != null
                         && entry.getRegistration().toString().length() != 0) {
-                    serializer.startTag(null, RECORD_ELEMENT);
+                    serializer.startTag(null, getRecordElementName());
                     serializer.startTag(null, MANUFACTURER_ELEMENT);
                     if (entry.getManufacturer() != null
                             && entry.getManufacturer().toString().length() != 0) {
                         serializer.text(entry.getManufacturer());
                     }
                     serializer.endTag(null, MANUFACTURER_ELEMENT);
-                    serializer.startTag(null, "Model");
+                    serializer.startTag(null, MODEL_ELEMENT);
                     if (entry.getModel() != null
                             && entry.getModel().toString().length() != 0) {
                         serializer.text(entry.getModel());
                     }
-                    serializer.endTag(null, "Model");
+                    serializer.endTag(null, MODEL_ELEMENT);
                     serializer.startTag(null, REGISTRATION_ELEMENT);
                     serializer.text(entry.getRegistration());
                     serializer.endTag(null, REGISTRATION_ELEMENT);
-                    serializer.endTag(null, RECORD_ELEMENT);
+                    serializer.endTag(null, getRecordElementName());
                 }
             }
         }
 
-        serializer.endTag(null, ROOT_ELEMENT);
+        serializer.endTag(null, getRootElementName());
         serializer.endDocument();
         serializer.flush();
         outputStream.close();
     }
+
+    private String getRecordElementName() throws FileNotFoundException {
+        if (recordElementName == null) {
+            if (getRootElementName().endsWith("s")) {
+                recordElementName = getRootElementName().substring(0,
+                        getRootElementName().length() - 1);
+            }
+        }
+
+        return recordElementName;
+    }
+
+    private String getRootElementName() throws FileNotFoundException {
+        if (rootElementName == null) {
+            File vehiclesFile = new File(Configuration.getVehiclesFile());
+            String filenameWithoutPathOrExtension = Filename
+                    .FilenameWithoutPathOrExtension(new File(vehiclesFile
+                            .getName()));
+
+            if (!filenameWithoutPathOrExtension.endsWith("s")) {
+                filenameWithoutPathOrExtension = String.format("%ss",
+                        filenameWithoutPathOrExtension, "s");
+            }
+            rootElementName = filenameWithoutPathOrExtension;
+        }
+
+        return rootElementName;
+    }
+
 }
