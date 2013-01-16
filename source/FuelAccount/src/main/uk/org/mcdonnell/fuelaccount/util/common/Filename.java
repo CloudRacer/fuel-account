@@ -13,8 +13,10 @@ public class Filename {
         // Remove the path.
         filenameWithoutPathOrExtension = file.getName();
         // Remove the extension.
-        filenameWithoutPathOrExtension = filenameWithoutPathOrExtension
-                .substring(0, filenameWithoutPathOrExtension.indexOf("."));
+        if (filenameWithoutPathOrExtension.indexOf(".") != -1) {
+            filenameWithoutPathOrExtension = filenameWithoutPathOrExtension
+                    .substring(0, filenameWithoutPathOrExtension.indexOf("."));
+        }
 
         return filenameWithoutPathOrExtension;
     }
