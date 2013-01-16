@@ -1,9 +1,11 @@
 package uk.org.mcdonnell.fuelaccount.vehicle;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import uk.org.mcdonnell.fuelaccount.R;
 import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
+import uk.org.mcdonnell.fuelaccount.util.configuration.Configuration;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -178,11 +180,19 @@ public class VehicleFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Bind the list to the XML.
-        vehicleAdapter = new VehicleAdapter(this.getView().getContext(),
-                R.layout.row, (ArrayList<VehicleType>) getVehicleManager()
-                        .getVehicle());
-        ListView list = (ListView) getView().findViewById(R.id.listVehicles);
-        list.setAdapter(vehicleAdapter);
+        try {
+            vehicleAdapter = new VehicleAdapter(this.getView().getContext(),
+                    R.layout.row, (ArrayList<VehicleType>) getVehicleManager()
+                            .getVehicle());
+            ListView list = (ListView) getView()
+                    .findViewById(R.id.listVehicles);
+            list.setAdapter(vehicleAdapter);
+        } catch (FileNotFoundException e) {
+            Log.e(this.getClass().getName(), "Error occurred while deleting.",
+                    e);
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
     @Override
@@ -217,9 +227,10 @@ public class VehicleFragment extends Fragment {
         return registration;
     }
 
-    private VehicleManager getVehicleManager() {
+    private VehicleManager getVehicleManager() throws FileNotFoundException {
         if (vehicleManager == null) {
-            vehicleManager = new VehicleManager(getView());
+            vehicleManager = new VehicleManager(getView(),
+                    Configuration.getVehiclesFile());
         }
         return vehicleManager;
     }

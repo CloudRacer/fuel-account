@@ -12,10 +12,9 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
-import uk.org.mcdonnell.fuelaccount.util.common.Filename;
-import uk.org.mcdonnell.fuelaccount.util.configuration.Configuration;
 import uk.org.mcdonnell.fuelaccount.schemas.ObjectFactory;
 import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
+import uk.org.mcdonnell.fuelaccount.util.common.Filename;
 import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
@@ -32,13 +31,15 @@ public class VehicleManager extends
 
     private String recordElementName = null;
     private String rootElementName = null;
+    private String xmlFilename = null;
 
     private Context context;
 
     private List<VehicleType> vehicles = null;
 
-    public VehicleManager(View view) {
+    public VehicleManager(View view, String xmlFilename) {
         this.setContext(view.getContext().getApplicationContext());
+        this.setXMLFilename(xmlFilename);
     }
 
     private Context getContext() {
@@ -56,10 +57,9 @@ public class VehicleManager extends
             // Load the XML File.
             FileInputStream fileInputStream = null;
             try {
-                if (getContext().getFileStreamPath(
-                        Configuration.getVehiclesFile()).exists()) {
+                if (getContext().getFileStreamPath(getXMLFilename()).exists()) {
                     fileInputStream = getContext().openFileInput(
-                            Configuration.getVehiclesFile());
+                            getXMLFilename());
 
                     VehicleType vehicleType = null;
                     XmlPullParserFactory factory = XmlPullParserFactory
@@ -194,7 +194,7 @@ public class VehicleManager extends
     public void save(Context context) throws IllegalArgumentException,
             IllegalStateException, IOException {
         FileOutputStream outputStream = context.openFileOutput(
-                Configuration.getVehiclesFile(), Context.MODE_PRIVATE);
+                getXMLFilename(), Context.MODE_PRIVATE);
 
         XmlSerializer serializer = Xml.newSerializer();
 
@@ -252,7 +252,7 @@ public class VehicleManager extends
 
     private String getRootElementName() throws FileNotFoundException {
         if (rootElementName == null) {
-            File vehiclesFile = new File(Configuration.getVehiclesFile());
+            File vehiclesFile = new File(getXMLFilename());
             String filenameWithoutPathOrExtension = Filename
                     .FilenameWithoutPathOrExtension(new File(vehiclesFile
                             .getName()));
@@ -265,6 +265,14 @@ public class VehicleManager extends
         }
 
         return rootElementName;
+    }
+
+    private String getXMLFilename() {
+        return xmlFilename;
+    }
+
+    private void setXMLFilename(String xmlFilename) {
+        this.xmlFilename = xmlFilename;
     }
 
 }
