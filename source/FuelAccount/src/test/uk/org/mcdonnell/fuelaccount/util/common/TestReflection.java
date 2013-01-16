@@ -1,4 +1,4 @@
-package uk.org.mcdonnell.fuelaccount.util.common.reflection;
+package uk.org.mcdonnell.fuelaccount.util.common;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -8,6 +8,7 @@ import uk.org.mcdonnell.fuelaccount.util.common.ClassReflection;
 import junit.framework.TestCase;
 
 public class TestReflection extends TestCase {
+
     public void testIsMethodOfClass() {
         try {
             final String TEST_METHOD_NAME_SUFFIX = "name";
@@ -33,4 +34,5 @@ public class TestReflection extends TestCase {
             e.printStackTrace();
         }
     }
+
 }
