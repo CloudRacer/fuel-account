@@ -28,7 +28,7 @@ public class MainActivity extends FragmentActivity {
             // deleteFile(FILENAME);
             // deleteFile(uk.org.mcdonnell.fuelaccount.configuration.Configuration
             // .getStationsFile());
-            // deleteFile(uk.org.mcdonnell.fuelaccount.configuration.Configuration
+            // deleteFile(uk.org.mcdonnell.fuelaccount.util.configuration.Configuration
             // .getVehiclesFile());
 
             System.out.println("Application File Count:" + fileList().length
@@ -59,10 +59,8 @@ public class MainActivity extends FragmentActivity {
             System.out.println("Application File Count:" + fileList().length
                     + ".");
         } catch (Exception e) {
-            Log.e(this.getClass().getName(),
-                    "Error occurred while saving.", e);
-            Toast.makeText(this, e.getMessage(),
-                    Toast.LENGTH_LONG).show();
+            Log.e(this.getClass().getName(), "Error occurred while saving.", e);
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         // Check that the activity is using the layout version with

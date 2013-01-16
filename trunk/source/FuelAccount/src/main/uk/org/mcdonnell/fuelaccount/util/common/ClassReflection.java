@@ -1,9 +1,12 @@
-package uk.org.mcdonnell.fuelaccount.util.common.reflection;
+package uk.org.mcdonnell.fuelaccount.util.common;
 
 import java.lang.reflect.Method;
 import java.util.Locale;
 
-public class Miscellaneous {
+public class ClassReflection {
+
+    private ClassReflection() {
+    }
 
     public static Method isMethodOfClass(Class<?> classToExamine,
             String methodName) {
