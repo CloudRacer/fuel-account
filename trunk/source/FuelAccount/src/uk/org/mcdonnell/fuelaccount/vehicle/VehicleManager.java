@@ -10,7 +10,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
-import uk.org.mcdonnell.fuelaccount.configuration.Configuration;
+import uk.org.mcdonnell.fuelaccount.util.configuration.Configuration;
 import uk.org.mcdonnell.fuelaccount.schemas.ObjectFactory;
 import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
 import android.content.Context;
@@ -19,7 +19,8 @@ import android.util.Xml;
 import android.view.View;
 import android.widget.Toast;
 
-public class VehicleManager extends uk.org.mcdonnell.fuelaccount.schemas.VehiclesType {
+public class VehicleManager extends
+        uk.org.mcdonnell.fuelaccount.schemas.VehiclesType {
 
     private static final String ROOT_ELEMENT = "vehicles";
     private static final String RECORD_ELEMENT = "vehicle";
