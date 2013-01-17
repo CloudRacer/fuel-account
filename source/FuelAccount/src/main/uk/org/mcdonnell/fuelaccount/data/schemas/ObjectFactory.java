@@ -5,7 +5,7 @@
 // Generated on: 2013.01.08 at 07:37:04 PM GMT 
 //
 
-package uk.org.mcdonnell.fuelaccount.schemas;
+package uk.org.mcdonnell.fuelaccount.data.schemas;
 
 /**
  * This object contains factory methods for each Java content interface and Java

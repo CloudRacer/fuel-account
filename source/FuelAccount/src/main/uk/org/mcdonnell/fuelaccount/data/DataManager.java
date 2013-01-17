@@ -1,4 +1,4 @@
-package uk.org.mcdonnell.fuelaccount.view.vehicle;
+package uk.org.mcdonnell.fuelaccount.data;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,8 +15,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
-import uk.org.mcdonnell.fuelaccount.schemas.ObjectFactory;
-import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
+import uk.org.mcdonnell.fuelaccount.data.schemas.ObjectFactory;
+import uk.org.mcdonnell.fuelaccount.data.schemas.VehicleType;
 import uk.org.mcdonnell.fuelaccount.util.common.ClassReflection;
 import uk.org.mcdonnell.fuelaccount.util.common.Filename;
 import android.content.Context;
@@ -25,8 +25,8 @@ import android.util.Xml;
 import android.view.View;
 import android.widget.Toast;
 
-public class VehicleManager extends
-        uk.org.mcdonnell.fuelaccount.schemas.VehiclesType {
+public class DataManager extends
+        uk.org.mcdonnell.fuelaccount.data.schemas.VehiclesType {
 
     private static final String ENCODING = "UTF-8";
 
@@ -38,7 +38,7 @@ public class VehicleManager extends
 
     private List<VehicleType> vehicles = null;
 
-    public VehicleManager(View view, String xmlFilename) {
+    public DataManager(View view, String xmlFilename) {
         this.setContext(view.getContext().getApplicationContext());
         this.setXMLFilename(xmlFilename);
     }

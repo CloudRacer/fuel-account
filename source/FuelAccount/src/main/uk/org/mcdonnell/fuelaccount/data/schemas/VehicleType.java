@@ -6,7 +6,7 @@
 //
 
 
-package uk.org.mcdonnell.fuelaccount.schemas;
+package uk.org.mcdonnell.fuelaccount.data.schemas;
 
 
 /**
