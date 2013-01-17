@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -84,7 +86,7 @@ public class VehicleManager extends
                                                 .deriveSetterMethodName(xmlPullParser
                                                         .getName());
                                         Method method = ClassReflection
-                                                .getMethodOfClass(
+                                                .getMethod(
                                                         vehicleType.getClass(),
                                                         methodName);
                                         if (method != null) {
@@ -93,29 +95,6 @@ public class VehicleManager extends
                                                     xmlPullParser.getText());
                                         }
                                     }
-                                    /*
-                                     * if (xmlPullParser.getName()
-                                     * .equalsIgnoreCase( MANUFACTURER_ELEMENT))
-                                     * { // Go to the element content. eventType
-                                     * = xmlPullParser.next(); vehicleType
-                                     * .setManufacturer(xmlPullParser
-                                     * .getText()); // Go to the closing tag.
-                                     * eventType = xmlPullParser.next(); } else
-                                     * if (xmlPullParser.getName()
-                                     * .equalsIgnoreCase(MODEL_ELEMENT)) { // Go
-                                     * to the element content. eventType =
-                                     * xmlPullParser.next();
-                                     * vehicleType.setModel(xmlPullParser
-                                     * .getText()); // Go to the closing tag.
-                                     * eventType = xmlPullParser.next(); } else
-                                     * if (xmlPullParser.getName()
-                                     * .equalsIgnoreCase( REGISTRATION_ELEMENT))
-                                     * { // Go to the element content. eventType
-                                     * = xmlPullParser.next(); vehicleType
-                                     * .setRegistration(xmlPullParser
-                                     * .getText()); // Go to the closing tag.
-                                     * eventType = xmlPullParser.next(); }
-                                     */
                                 }
                             } else if (eventType == XmlPullParser.END_TAG) {
                                 if (xmlPullParser.getName().equalsIgnoreCase(
@@ -201,14 +180,16 @@ public class VehicleManager extends
     }
 
     public void save(Context context, VehicleType vehicleType)
-            throws IllegalArgumentException, IllegalStateException, IOException {
+            throws IllegalArgumentException, IllegalStateException,
+            IOException, IllegalAccessException, InvocationTargetException {
         addVehicle(vehicleType);
 
         save(context);
     }
 
     public void save(Context context) throws IllegalArgumentException,
-            IllegalStateException, IOException {
+            IllegalStateException, IOException, IllegalAccessException,
+            InvocationTargetException {
         FileOutputStream outputStream = context.openFileOutput(
                 getXMLFilename(), Context.MODE_PRIVATE);
 
@@ -224,29 +205,50 @@ public class VehicleManager extends
         if (vehicles != null && !vehicles.isEmpty()) {
             ListIterator<VehicleType> list = vehicles.listIterator();
             while (list.hasNext()) {
+                serializer.startTag(null, getRecordElementName());
+
                 VehicleType entry = list.next();
 
-                if (entry.getRegistration() != null
-                        && entry.getRegistration().toString().length() != 0) {
-                    serializer.startTag(null, getRecordElementName());
-                    serializer.startTag(null, MANUFACTURER_ELEMENT);
-                    if (entry.getManufacturer() != null
-                            && entry.getManufacturer().toString().length() != 0) {
-                        serializer.text(entry.getManufacturer());
+                Method[] methods = entry.getClass().getMethods();
+
+                for (int i = 0; i < methods.length; i++) {
+                    Method method = methods[i];
+
+                    if (method.getName().startsWith("get")
+                            && !method.getName().equals("getClass")
+                            && !method.getName().equals("getName")) {
+                        String elementName = method.getName().substring(3)
+                                .toLowerCase(Locale.getDefault());
+                        String elementValue = (String) method.invoke(entry,
+                                new Object[] {});
+                        serializer.startTag(null, elementName);
+                        if (elementValue != null && elementValue.length() != 0) {
+                            serializer.text(elementValue);
+                        }
+                        serializer.endTag(null, elementName);
                     }
-                    serializer.endTag(null, MANUFACTURER_ELEMENT);
-                    serializer.startTag(null, MODEL_ELEMENT);
-                    if (entry.getModel() != null
-                            && entry.getModel().toString().length() != 0) {
-                        serializer.text(entry.getModel());
-                    }
-                    serializer.endTag(null, MODEL_ELEMENT);
-                    serializer.startTag(null, REGISTRATION_ELEMENT);
-                    serializer.text(entry.getRegistration());
-                    serializer.endTag(null, REGISTRATION_ELEMENT);
-                    serializer.endTag(null, getRecordElementName());
                 }
+
+                serializer.endTag(null, getRecordElementName());
             }
+
+            /*
+             * if (entry.getRegistration() != null &&
+             * entry.getRegistration().toString().length() != 0) {
+             * serializer.startTag(null, getRecordElementName());
+             * serializer.startTag(null, MANUFACTURER_ELEMENT); if
+             * (entry.getManufacturer() != null &&
+             * entry.getManufacturer().toString().length() != 0) {
+             * serializer.text(entry.getManufacturer()); }
+             * serializer.endTag(null, MANUFACTURER_ELEMENT);
+             * serializer.startTag(null, MODEL_ELEMENT); if (entry.getModel() !=
+             * null && entry.getModel().toString().length() != 0) {
+             * serializer.text(entry.getModel()); } serializer.endTag(null,
+             * MODEL_ELEMENT); serializer.startTag(null, REGISTRATION_ELEMENT);
+             * serializer.text(entry.getRegistration()); serializer.endTag(null,
+             * REGISTRATION_ELEMENT); serializer.endTag(null,
+             * getRecordElementName()); }
+             */
         }
 
         serializer.endTag(null, getRootElementName());
