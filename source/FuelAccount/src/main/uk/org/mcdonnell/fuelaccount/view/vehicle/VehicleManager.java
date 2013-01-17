@@ -1,4 +1,4 @@
-package uk.org.mcdonnell.fuelaccount.vehicle;
+package uk.org.mcdonnell.fuelaccount.view.vehicle;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package uk.org.mcdonnell.fuelaccount.station;
+package uk.org.mcdonnell.fuelaccount.view.station;
 
 import uk.org.mcdonnell.fuelaccount.R;
 import android.app.Activity;
