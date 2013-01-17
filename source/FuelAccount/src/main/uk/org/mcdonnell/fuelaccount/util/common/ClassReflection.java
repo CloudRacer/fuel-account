@@ -8,7 +8,7 @@ public class ClassReflection {
     private ClassReflection() {
     }
 
-    public static Method getMethodOfClass(Class<?> classToExamine,
+    public static Method getMethod(Class<?> classToExamine,
             String methodName) {
         Method method = null;
         Method[] methods = classToExamine.getMethods();
