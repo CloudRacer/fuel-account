@@ -13,11 +13,11 @@ public class TestReflection extends TestCase {
         try {
             final String TEST_METHOD_NAME_SUFFIX = "name";
             final String TEST_METHOD_NAME = ClassReflection
-                    .deriveGetterMethodName(TEST_METHOD_NAME_SUFFIX);
+                    .deriveSetterMethodName(TEST_METHOD_NAME_SUFFIX);
 
             File testObject = new File("test_filename");
 
-            Method method = ClassReflection.isMethodOfClass(
+            Method method = ClassReflection.getMethodOfClass(
                     testObject.getClass(), TEST_METHOD_NAME);
 
             System.out.println(String.format(
