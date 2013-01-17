@@ -8,7 +8,7 @@ public class ClassReflection {
     private ClassReflection() {
     }
 
-    public static Method isMethodOfClass(Class<?> classToExamine,
+    public static Method getMethodOfClass(Class<?> classToExamine,
             String methodName) {
         Method method = null;
         Method[] methods = classToExamine.getMethods();
@@ -25,8 +25,8 @@ public class ClassReflection {
         return method;
     }
 
-    public static String deriveGetterMethodName(String methodNameSuffix) {
-        final String TEST_METHOD_NAME_GETTER_PREFIX = "get";
+    public static String deriveSetterMethodName(String methodNameSuffix) {
+        final String TEST_METHOD_NAME_GETTER_PREFIX = "set";
         final String TEST_METHOD_NAME = String.format("%s%s%s",
                 TEST_METHOD_NAME_GETTER_PREFIX,
                 methodNameSuffix.toUpperCase(Locale.getDefault()).charAt(0),

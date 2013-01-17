@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -14,6 +15,7 @@ import org.xmlpull.v1.XmlSerializer;
 
 import uk.org.mcdonnell.fuelaccount.schemas.ObjectFactory;
 import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
+import uk.org.mcdonnell.fuelaccount.util.common.ClassReflection;
 import uk.org.mcdonnell.fuelaccount.util.common.Filename;
 import android.content.Context;
 import android.util.Log;
@@ -76,30 +78,44 @@ public class VehicleManager extends
                                         getRecordElementName())) {
                                     vehicleType = new ObjectFactory()
                                             .createVehicleType();
-                                } else if (xmlPullParser.getName()
-                                        .equalsIgnoreCase(MANUFACTURER_ELEMENT)) {
-                                    // Go to the element content.
-                                    eventType = xmlPullParser.next();
-                                    vehicleType.setManufacturer(xmlPullParser
-                                            .getText());
-                                    // Go to the closing tag.
-                                    eventType = xmlPullParser.next();
-                                } else if (xmlPullParser.getName()
-                                        .equalsIgnoreCase(MODEL_ELEMENT)) {
-                                    // Go to the element content.
-                                    eventType = xmlPullParser.next();
-                                    vehicleType.setModel(xmlPullParser
-                                            .getText());
-                                    // Go to the closing tag.
-                                    eventType = xmlPullParser.next();
-                                } else if (xmlPullParser.getName()
-                                        .equalsIgnoreCase(REGISTRATION_ELEMENT)) {
-                                    // Go to the element content.
-                                    eventType = xmlPullParser.next();
-                                    vehicleType.setRegistration(xmlPullParser
-                                            .getText());
-                                    // Go to the closing tag.
-                                    eventType = xmlPullParser.next();
+                                } else {
+                                    if (vehicleType != null) {
+                                        String methodName = ClassReflection
+                                                .deriveSetterMethodName(xmlPullParser
+                                                        .getName());
+                                        Method method = ClassReflection
+                                                .getMethodOfClass(
+                                                        vehicleType.getClass(),
+                                                        methodName);
+                                        if (method != null) {
+                                            xmlPullParser.next();
+                                            method.invoke(vehicleType,
+                                                    xmlPullParser.getText());
+                                        }
+                                    }
+                                    /*
+                                     * if (xmlPullParser.getName()
+                                     * .equalsIgnoreCase( MANUFACTURER_ELEMENT))
+                                     * { // Go to the element content. eventType
+                                     * = xmlPullParser.next(); vehicleType
+                                     * .setManufacturer(xmlPullParser
+                                     * .getText()); // Go to the closing tag.
+                                     * eventType = xmlPullParser.next(); } else
+                                     * if (xmlPullParser.getName()
+                                     * .equalsIgnoreCase(MODEL_ELEMENT)) { // Go
+                                     * to the element content. eventType =
+                                     * xmlPullParser.next();
+                                     * vehicleType.setModel(xmlPullParser
+                                     * .getText()); // Go to the closing tag.
+                                     * eventType = xmlPullParser.next(); } else
+                                     * if (xmlPullParser.getName()
+                                     * .equalsIgnoreCase( REGISTRATION_ELEMENT))
+                                     * { // Go to the element content. eventType
+                                     * = xmlPullParser.next(); vehicleType
+                                     * .setRegistration(xmlPullParser
+                                     * .getText()); // Go to the closing tag.
+                                     * eventType = xmlPullParser.next(); }
+                                     */
                                 }
                             } else if (eventType == XmlPullParser.END_TAG) {
                                 if (xmlPullParser.getName().equalsIgnoreCase(
