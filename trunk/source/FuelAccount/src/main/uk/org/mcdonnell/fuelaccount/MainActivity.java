@@ -1,7 +1,7 @@
 package uk.org.mcdonnell.fuelaccount;
 
-import uk.org.mcdonnell.fuelaccount.station.StationFragment;
-import uk.org.mcdonnell.fuelaccount.vehicle.VehicleFragment;
+import uk.org.mcdonnell.fuelaccount.view.station.StationFragment;
+import uk.org.mcdonnell.fuelaccount.view.vehicle.VehicleFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
