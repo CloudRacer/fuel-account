@@ -28,9 +28,6 @@ import android.widget.Toast;
 public class VehicleManager extends
         uk.org.mcdonnell.fuelaccount.schemas.VehiclesType {
 
-    private static final String REGISTRATION_ELEMENT = "registration";
-    private static final String MODEL_ELEMENT = "model";
-    private static final String MANUFACTURER_ELEMENT = "manufacturer";
     private static final String ENCODING = "UTF-8";
 
     private String recordElementName = null;
@@ -231,24 +228,6 @@ public class VehicleManager extends
 
                 serializer.endTag(null, getRecordElementName());
             }
-
-            /*
-             * if (entry.getRegistration() != null &&
-             * entry.getRegistration().toString().length() != 0) {
-             * serializer.startTag(null, getRecordElementName());
-             * serializer.startTag(null, MANUFACTURER_ELEMENT); if
-             * (entry.getManufacturer() != null &&
-             * entry.getManufacturer().toString().length() != 0) {
-             * serializer.text(entry.getManufacturer()); }
-             * serializer.endTag(null, MANUFACTURER_ELEMENT);
-             * serializer.startTag(null, MODEL_ELEMENT); if (entry.getModel() !=
-             * null && entry.getModel().toString().length() != 0) {
-             * serializer.text(entry.getModel()); } serializer.endTag(null,
-             * MODEL_ELEMENT); serializer.startTag(null, REGISTRATION_ELEMENT);
-             * serializer.text(entry.getRegistration()); serializer.endTag(null,
-             * REGISTRATION_ELEMENT); serializer.endTag(null,
-             * getRecordElementName()); }
-             */
         }
 
         serializer.endTag(null, getRootElementName());
