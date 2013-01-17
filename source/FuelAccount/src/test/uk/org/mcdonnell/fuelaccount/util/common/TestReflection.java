@@ -17,7 +17,7 @@ public class TestReflection extends TestCase {
 
             File testObject = new File("test_filename");
 
-            Method method = ClassReflection.getMethodOfClass(
+            Method method = ClassReflection.getMethod(
                     testObject.getClass(), TEST_METHOD_NAME);
 
             System.out.println(String.format(
