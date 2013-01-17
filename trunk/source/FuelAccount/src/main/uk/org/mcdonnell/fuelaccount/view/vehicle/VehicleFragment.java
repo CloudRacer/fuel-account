@@ -4,7 +4,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import uk.org.mcdonnell.fuelaccount.R;
-import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
+import uk.org.mcdonnell.fuelaccount.data.DataManager;
+import uk.org.mcdonnell.fuelaccount.data.schemas.VehicleType;
 import uk.org.mcdonnell.fuelaccount.util.configuration.Configuration;
 import android.app.Activity;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class VehicleFragment extends Fragment {
     private Button doneButton;
     private ListView listView;
 
-    private VehicleManager vehicleManager;
+    private DataManager vehicleManager;
     private VehicleAdapter vehicleAdapter;
 
     @Override
@@ -227,9 +228,9 @@ public class VehicleFragment extends Fragment {
         return registration;
     }
 
-    private VehicleManager getVehicleManager() throws FileNotFoundException {
+    private DataManager getVehicleManager() throws FileNotFoundException {
         if (vehicleManager == null) {
-            vehicleManager = new VehicleManager(getView(),
+            vehicleManager = new DataManager(getView(),
                     Configuration.getVehiclesFile());
         }
         return vehicleManager;

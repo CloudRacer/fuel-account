@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import uk.org.mcdonnell.fuelaccount.R;
-import uk.org.mcdonnell.fuelaccount.schemas.VehicleType;
+import uk.org.mcdonnell.fuelaccount.data.schemas.VehicleType;
 
 class VehicleAdapter extends ArrayAdapter<VehicleType> {
 
