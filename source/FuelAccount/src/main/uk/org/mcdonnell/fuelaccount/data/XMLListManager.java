@@ -3,22 +3,28 @@ package uk.org.mcdonnell.fuelaccount.data;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Locale;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
+import org.xmlpull.v1.XmlSerializer;
 
 import uk.org.mcdonnell.fuelaccount.util.common.ClassReflection;
 import uk.org.mcdonnell.fuelaccount.util.common.Filename;
 import uk.org.mcdonnell.fuelaccount.util.common.Miscellaneous;
 import android.content.Context;
 import android.util.Log;
+import android.util.Xml;
 import android.widget.Toast;
 
-class XMLListManager extends uk.org.mcdonnell.fuelaccount.data.schemas.VehiclesType {
+class XMLListManager {
 
     private static final String ENCODING = "UTF-8";
 
@@ -135,11 +141,62 @@ class XMLListManager extends uk.org.mcdonnell.fuelaccount.data.schemas.VehiclesT
         return recordElementName;
     }
 
+    public void save(List<Object> records) throws IllegalArgumentException,
+            IllegalStateException, IOException, IllegalAccessException,
+            InvocationTargetException {
+        FileOutputStream outputStream = getContext().openFileOutput(
+                getXMLFilename(), Context.MODE_PRIVATE);
+
+        XmlSerializer serializer = Xml.newSerializer();
+
+        serializer.setOutput(outputStream, ENCODING);
+        serializer.startDocument(null, Boolean.valueOf(true));
+        serializer.setFeature(
+                "http://xmlpull.org/v1/doc/features.html#indent-output", true);
+        serializer.startTag(null, getRootElementName());
+
+        if (records != null && !records.isEmpty()) {
+            ListIterator<Object> list = records.listIterator();
+            while (list.hasNext()) {
+                serializer.startTag(null, getRecordElementName());
+
+                Object entry = list.next();
+
+                Method[] methods = entry.getClass().getMethods();
+
+                for (int i = 0; i < methods.length; i++) {
+                    Method method = methods[i];
+
+                    if (method.getName().startsWith("get")
+                            && !method.getName().equals("getClass")
+                            && !method.getName().equals("getName")) {
+                        String elementName = method.getName().substring(3)
+                                .toLowerCase(Locale.getDefault());
+                        String elementValue = (String) method.invoke(entry,
+                                new Object[] {});
+                        serializer.startTag(null, elementName);
+                        if (elementValue != null && elementValue.length() != 0) {
+                            serializer.text(elementValue);
+                        }
+                        serializer.endTag(null, elementName);
+                    }
+                }
+
+                serializer.endTag(null, getRecordElementName());
+            }
+        }
+
+        serializer.endTag(null, getRootElementName());
+        serializer.endDocument();
+        serializer.flush();
+        outputStream.close();
+    }
+
     private String getRootElementName() throws FileNotFoundException {
         if (rootElementName == null) {
-            File vehiclesFile = new File(getXMLFilename());
+            File file = new File(getXMLFilename());
             String filenameWithoutPathOrExtension = Filename
-                    .FilenameWithoutPathOrExtension(new File(vehiclesFile
+                    .FilenameWithoutPathOrExtension(new File(file
                             .getName()));
 
             if (!filenameWithoutPathOrExtension.endsWith("s")) {

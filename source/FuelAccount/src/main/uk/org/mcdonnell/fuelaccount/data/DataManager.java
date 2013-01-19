@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -120,6 +121,12 @@ public class DataManager extends
     public void save(Context context) throws IllegalArgumentException,
             IllegalStateException, IOException, IllegalAccessException,
             InvocationTargetException {
+        List<Object> records = new ArrayList<Object>();
+        Iterator<VehicleType> iterator = super.getVehicle().iterator();
+        while (iterator.hasNext()) {
+            records.add((Object) iterator.next());
+        }
+
         FileOutputStream outputStream = context.openFileOutput(
                 getXMLFilename(), Context.MODE_PRIVATE);
 
