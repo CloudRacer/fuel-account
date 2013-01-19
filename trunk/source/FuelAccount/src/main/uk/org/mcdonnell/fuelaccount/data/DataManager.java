@@ -98,9 +98,9 @@ public class DataManager extends
                                         getRecordElementName())) {
                                     addVehicle(vehicleType);
                                     vehicleType = null;
-
-                                    break;
                                 }
+
+                                break;
                             }
                         }
 
