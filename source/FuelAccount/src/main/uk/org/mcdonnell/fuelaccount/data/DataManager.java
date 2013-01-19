@@ -15,10 +15,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
-import uk.org.mcdonnell.fuelaccount.data.schemas.ObjectFactory;
 import uk.org.mcdonnell.fuelaccount.data.schemas.VehicleType;
 import uk.org.mcdonnell.fuelaccount.util.common.ClassReflection;
 import uk.org.mcdonnell.fuelaccount.util.common.Filename;
+import uk.org.mcdonnell.fuelaccount.util.common.Miscellaneous;
 import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
@@ -62,7 +62,7 @@ public class DataManager extends
                     fileInputStream = getContext().openFileInput(
                             getXMLFilename());
 
-                    VehicleType vehicleType = null;
+                    Object vehicleType = null;
                     XmlPullParserFactory factory = XmlPullParserFactory
                             .newInstance();
                     factory.setNamespaceAware(true);
@@ -76,8 +76,13 @@ public class DataManager extends
                             case XmlPullParser.START_TAG:
                                 if (xmlPullParser.getName().equalsIgnoreCase(
                                         getRecordElementName())) {
-                                    vehicleType = new ObjectFactory()
-                                            .createVehicleType();
+                                    String className = String
+                                            .format("%s.%s%s", "uk.org.mcdonnell.fuelaccount.data.schemas",
+                                                    Miscellaneous
+                                                            .initialiseText(getRecordElementName()),
+                                                    "Type");
+                                    vehicleType = Class.forName(className)
+                                            .newInstance();
                                 } else if (vehicleType != null) {
                                     String methodName = ClassReflection
                                             .deriveSetterMethodName(xmlPullParser
@@ -96,7 +101,7 @@ public class DataManager extends
                             case XmlPullParser.END_TAG:
                                 if (xmlPullParser.getName().equalsIgnoreCase(
                                         getRecordElementName())) {
-                                    addVehicle(vehicleType);
+                                    addVehicle((VehicleType) vehicleType);
                                     vehicleType = null;
                                 }
 
