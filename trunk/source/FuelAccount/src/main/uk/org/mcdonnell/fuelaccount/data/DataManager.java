@@ -77,28 +77,25 @@ public class DataManager extends
                                         getRecordElementName())) {
                                     vehicleType = new ObjectFactory()
                                             .createVehicleType();
-                                } else {
-                                    if (vehicleType != null) {
-                                        String methodName = ClassReflection
-                                                .deriveSetterMethodName(xmlPullParser
-                                                        .getName());
-                                        Method method = ClassReflection
-                                                .getMethod(
-                                                        vehicleType.getClass(),
-                                                        methodName);
-                                        if (method != null) {
-                                            xmlPullParser.next();
-                                            method.invoke(vehicleType,
-                                                    xmlPullParser.getText());
-                                        }
+                                } else if (vehicleType != null) {
+                                    String methodName = ClassReflection
+                                            .deriveSetterMethodName(xmlPullParser
+                                                    .getName());
+                                    Method method = ClassReflection.getMethod(
+                                            vehicleType.getClass(), methodName);
+                                    if (method != null) {
+                                        xmlPullParser.next();
+                                        method.invoke(vehicleType,
+                                                xmlPullParser.getText());
                                     }
+
                                 }
-                            } else if (eventType == XmlPullParser.END_TAG) {
-                                if (xmlPullParser.getName().equalsIgnoreCase(
-                                        getRecordElementName())) {
-                                    addVehicle(vehicleType);
-                                    vehicleType = null;
-                                }
+                            } else if (eventType == XmlPullParser.END_TAG
+                                    && xmlPullParser.getName()
+                                            .equalsIgnoreCase(
+                                                    getRecordElementName())) {
+                                addVehicle(vehicleType);
+                                vehicleType = null;
                             }
                         }
 
