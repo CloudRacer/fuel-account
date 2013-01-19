@@ -1,32 +1,19 @@
 package uk.org.mcdonnell.fuelaccount.data;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Locale;
-
-import org.xmlpull.v1.XmlSerializer;
 
 import uk.org.mcdonnell.fuelaccount.data.schemas.VehicleType;
-import uk.org.mcdonnell.fuelaccount.util.common.Filename;
 import android.content.Context;
-import android.util.Xml;
 import android.view.View;
 
 public class DataManager extends
         uk.org.mcdonnell.fuelaccount.data.schemas.VehiclesType {
 
-    private static final String ENCODING = "UTF-8";
-
-    private String recordElementName = null;
-    private String rootElementName = null;
     private String xmlFilename = null;
 
     private Context context;
@@ -62,11 +49,11 @@ public class DataManager extends
         return vehicles;
     }
 
-    public VehicleType getVehicle(VehicleType vehicleType) {
+    private VehicleType getVehicle(VehicleType vehicleType) {
         return getVehicle(vehicleType.getRegistration());
     }
 
-    public VehicleType getVehicle(String registration) {
+    private VehicleType getVehicle(String registration) {
         VehicleType vehicle = null;
 
         List<VehicleType> vehicles = super.getVehicle();
@@ -118,7 +105,7 @@ public class DataManager extends
         save(context);
     }
 
-    public void save(Context context) throws IllegalArgumentException,
+    private void save(Context context) throws IllegalArgumentException,
             IllegalStateException, IOException, IllegalAccessException,
             InvocationTargetException {
         List<Object> records = new ArrayList<Object>();
@@ -127,81 +114,7 @@ public class DataManager extends
             records.add((Object) iterator.next());
         }
 
-        FileOutputStream outputStream = context.openFileOutput(
-                getXMLFilename(), Context.MODE_PRIVATE);
-
-        XmlSerializer serializer = Xml.newSerializer();
-
-        serializer.setOutput(outputStream, ENCODING);
-        serializer.startDocument(null, Boolean.valueOf(true));
-        serializer.setFeature(
-                "http://xmlpull.org/v1/doc/features.html#indent-output", true);
-        serializer.startTag(null, getRootElementName());
-
-        List<VehicleType> vehicles = super.getVehicle();
-        if (vehicles != null && !vehicles.isEmpty()) {
-            ListIterator<VehicleType> list = vehicles.listIterator();
-            while (list.hasNext()) {
-                serializer.startTag(null, getRecordElementName());
-
-                VehicleType entry = list.next();
-
-                Method[] methods = entry.getClass().getMethods();
-
-                for (int i = 0; i < methods.length; i++) {
-                    Method method = methods[i];
-
-                    if (method.getName().startsWith("get")
-                            && !method.getName().equals("getClass")
-                            && !method.getName().equals("getName")) {
-                        String elementName = method.getName().substring(3)
-                                .toLowerCase(Locale.getDefault());
-                        String elementValue = (String) method.invoke(entry,
-                                new Object[] {});
-                        serializer.startTag(null, elementName);
-                        if (elementValue != null && elementValue.length() != 0) {
-                            serializer.text(elementValue);
-                        }
-                        serializer.endTag(null, elementName);
-                    }
-                }
-
-                serializer.endTag(null, getRecordElementName());
-            }
-        }
-
-        serializer.endTag(null, getRootElementName());
-        serializer.endDocument();
-        serializer.flush();
-        outputStream.close();
-    }
-
-    private String getRecordElementName() throws FileNotFoundException {
-        if (recordElementName == null) {
-            if (getRootElementName().endsWith("s")) {
-                recordElementName = getRootElementName().substring(0,
-                        getRootElementName().length() - 1);
-            }
-        }
-
-        return recordElementName;
-    }
-
-    private String getRootElementName() throws FileNotFoundException {
-        if (rootElementName == null) {
-            File vehiclesFile = new File(getXMLFilename());
-            String filenameWithoutPathOrExtension = Filename
-                    .FilenameWithoutPathOrExtension(new File(vehiclesFile
-                            .getName()));
-
-            if (!filenameWithoutPathOrExtension.endsWith("s")) {
-                filenameWithoutPathOrExtension = String.format("%ss",
-                        filenameWithoutPathOrExtension, "s");
-            }
-            rootElementName = filenameWithoutPathOrExtension;
-        }
-
-        return rootElementName;
+        getXMLManager().save(records);
     }
 
     private String getXMLFilename() {
