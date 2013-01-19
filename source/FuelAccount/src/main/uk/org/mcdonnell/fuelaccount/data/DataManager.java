@@ -72,7 +72,8 @@ public class DataManager extends
                     int eventType = xmlPullParser.getEventType();
                     while (eventType != XmlPullParser.END_DOCUMENT) {
                         if (eventType != XmlPullParser.START_DOCUMENT) {
-                            if (eventType == XmlPullParser.START_TAG) {
+                            switch (eventType) {
+                            case XmlPullParser.START_TAG:
                                 if (xmlPullParser.getName().equalsIgnoreCase(
                                         getRecordElementName())) {
                                     vehicleType = new ObjectFactory()
@@ -90,12 +91,16 @@ public class DataManager extends
                                     }
 
                                 }
-                            } else if (eventType == XmlPullParser.END_TAG
-                                    && xmlPullParser.getName()
-                                            .equalsIgnoreCase(
-                                                    getRecordElementName())) {
-                                addVehicle(vehicleType);
-                                vehicleType = null;
+
+                                break;
+                            case XmlPullParser.END_TAG:
+                                if (xmlPullParser.getName().equalsIgnoreCase(
+                                        getRecordElementName())) {
+                                    addVehicle(vehicleType);
+                                    vehicleType = null;
+
+                                    break;
+                                }
                             }
                         }
 
