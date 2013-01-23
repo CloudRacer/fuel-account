@@ -1,4 +1,4 @@
-package uk.org.mcdonnell.fuelaccount.data;
+package uk.org.mcdonnell.fuelaccount.util.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +24,7 @@ import android.util.Log;
 import android.util.Xml;
 import android.widget.Toast;
 
-class XMLListManager {
+public class XMLListManager {
 
     private static final String ENCODING = "UTF-8";
 
@@ -196,8 +196,7 @@ class XMLListManager {
         if (rootElementName == null) {
             File file = new File(getXMLFilename());
             String filenameWithoutPathOrExtension = Filename
-                    .FilenameWithoutPathOrExtension(new File(file
-                            .getName()));
+                    .FilenameWithoutPathOrExtension(new File(file.getName()));
 
             if (!filenameWithoutPathOrExtension.endsWith("s")) {
                 filenameWithoutPathOrExtension = String.format("%ss",

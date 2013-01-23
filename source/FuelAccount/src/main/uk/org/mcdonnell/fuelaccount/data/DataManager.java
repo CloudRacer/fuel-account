@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import uk.org.mcdonnell.fuelaccount.data.schemas.VehicleType;
+import uk.org.mcdonnell.fuelaccount.util.xml.XMLListManager;
 import android.content.Context;
 import android.view.View;
 
