@@ -12,7 +12,7 @@ import uk.org.mcdonnell.fuelaccount.util.xml.XMLListManager;
 import android.content.Context;
 import android.view.View;
 
-public class DataManager extends
+public class VehicleDataManager extends
         uk.org.mcdonnell.fuelaccount.data.schemas.VehiclesType {
 
     private String xmlFilename = null;
@@ -23,7 +23,7 @@ public class DataManager extends
 
     private List<VehicleType> vehicles = null;
 
-    public DataManager(View view, String xmlFilename) {
+    public VehicleDataManager(View view, String xmlFilename) {
         this.setContext(view.getContext().getApplicationContext());
         this.setXMLFilename(xmlFilename);
     }
