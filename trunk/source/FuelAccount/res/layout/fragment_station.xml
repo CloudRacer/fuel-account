@@ -27,19 +27,18 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="addStation"
-            android:text="@string/button_add_station" >
-        </Button>
-
-        <Button
             android:id="@+id/button_save_station"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="doneStation"
+            android:enabled="false"
             android:text="@string/button_save" >
         </Button>
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/listStations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>
