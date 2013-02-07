@@ -51,7 +51,7 @@ public class StationDataManager extends
     }
 
     private StationType getStation(StationType stationType) {
-        return getStation(stationType.getStationName());
+        return getStation(stationType.getTitle());
     }
 
     private StationType getStation(String stationName) {
@@ -62,8 +62,8 @@ public class StationDataManager extends
             ListIterator<StationType> list = stations.listIterator();
             while (list.hasNext() && station == null) {
                 StationType entry = list.next();
-                if (entry.getStationName() != null
-                        && entry.getStationName().equalsIgnoreCase(stationName)) {
+                if (entry.getTitle() != null
+                        && entry.getTitle().equalsIgnoreCase(stationName)) {
                     station = entry;
                 }
             }
@@ -76,9 +76,9 @@ public class StationDataManager extends
         if (getStation(stationType) == null) {
             super.getStation().add(stationType);
         } else {
-            getStation(stationType).setPetrolCompany(
-                    stationType.getPetrolCompany());
-            getStation(stationType).setPostCode(stationType.getPostCode());
+            getStation(stationType).setCompany(
+                    stationType.getCompany());
+            getStation(stationType).setPostcode(stationType.getPostcode());
         }
     }
 

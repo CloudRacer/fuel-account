@@ -22,7 +22,7 @@ public class MainActivity extends FragmentActivity {
 
         // ********** FOR TESTING ONLY **********
         try {
-            String FILENAME = "TEST";
+            String FILENAME = "stations.xml";
             // String string = "hello world!";
 
             // deleteFile(FILENAME);

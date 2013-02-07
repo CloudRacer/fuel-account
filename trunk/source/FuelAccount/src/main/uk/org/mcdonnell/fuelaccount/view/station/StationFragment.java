@@ -62,11 +62,11 @@ public class StationFragment extends Fragment {
                 if (activity != null) {
                     try {
                         StationType stationType = new StationType();
-                        stationType.setStationName(getStationName().getText()
+                        stationType.setTitle(getStationName().getText()
                                 .toString());
-                        stationType.setPetrolCompany(getPetrolCompany()
+                        stationType.setCompany(getPetrolCompany()
                                 .getText().toString());
-                        stationType.setPostCode(getPostCode().getText()
+                        stationType.setPostcode(getPostCode().getText()
                                 .toString());
                         getStationManager().save(getView().getContext(),
                                 stationType);
@@ -140,13 +140,13 @@ public class StationFragment extends Fragment {
                     View arg1, int arg2, long arg3) {
                 getStationName().setText(
                         ((StationType) arg0.getItemAtPosition(arg2))
-                                .getStationName());
+                                .getTitle());
                 getPetrolCompany().setText(
                         ((StationType) arg0.getItemAtPosition(arg2))
-                                .getPetrolCompany());
+                                .getCompany());
                 getPostCode().setText(
                         ((StationType) arg0.getItemAtPosition(arg2))
-                                .getPostCode());
+                                .getPostcode());
             };
         });
 
@@ -158,7 +158,7 @@ public class StationFragment extends Fragment {
                     getStationManager().deleteStation(
                             getView().getContext(),
                             ((StationType) arg0.getItemAtPosition(arg2))
-                                    .getStationName());
+                                    .getTitle());
                     stationAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     Log.e(this.getClass().getName(),
