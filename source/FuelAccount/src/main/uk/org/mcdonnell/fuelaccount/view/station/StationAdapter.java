@@ -35,10 +35,12 @@ class StationAdapter extends ArrayAdapter<StationType> {
             TextView tt = (TextView) v.findViewById(R.id.toptext);
             TextView bt = (TextView) v.findViewById(R.id.bottomtext);
             if (tt != null) {
-                tt.setText(stationType.getStationName());
+                tt.setText(String.format("%s (%s)",
+                        stationType.getTitle(),
+                        stationType.getCompany()));
             }
             if (bt != null) {
-                bt.setText(stationType.getStationName());
+                bt.setText(stationType.getPostcode());
             }
         }
         return v;

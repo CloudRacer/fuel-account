@@ -2,31 +2,31 @@ package uk.org.mcdonnell.fuelaccount.data.schemas;
 
 public class StationType {
 
-    protected String stationName;
-    protected String petrolCompany;
-    protected String postCode;
+    protected String title;
+    protected String company;
+    protected String postcode;
 
-    public String getStationName() {
-        return stationName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setStationName(String value) {
-        this.stationName = value;
+    public void setTitle(String value) {
+        this.title = value;
     }
 
-    public String getPetrolCompany() {
-        return petrolCompany;
+    public String getCompany() {
+        return company;
     }
 
-    public void setPetrolCompany(String value) {
-        this.petrolCompany = value;
+    public void setCompany(String value) {
+        this.company = value;
     }
 
-    public String getPostCode() {
-        return postCode;
+    public String getPostcode() {
+        return postcode;
     }
 
-    public void setPostCode(String value) {
-        this.postCode = value;
+    public void setPostcode(String value) {
+        this.postcode = value;
     }
 }
