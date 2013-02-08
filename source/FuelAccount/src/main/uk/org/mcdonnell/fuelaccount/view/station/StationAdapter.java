@@ -10,14 +10,14 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import uk.org.mcdonnell.fuelaccount.R;
-import uk.org.mcdonnell.fuelaccount.data.schemas.PurchaseType;
+import uk.org.mcdonnell.fuelaccount.data.schemas.StationType;
 
-class StationAdapter extends ArrayAdapter<PurchaseType> {
+class StationAdapter extends ArrayAdapter<StationType> {
 
-    private ArrayList<PurchaseType> items;
+    private ArrayList<StationType> items;
 
     public StationAdapter(Context context, int textViewResourceId,
-            ArrayList<PurchaseType> items) {
+            ArrayList<StationType> items) {
         super(context, textViewResourceId, items);
         this.items = items;
     }
@@ -30,17 +30,17 @@ class StationAdapter extends ArrayAdapter<PurchaseType> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.row, null);
         }
-        PurchaseType stationType = items.get(position);
+        StationType stationType = items.get(position);
         if (stationType != null) {
             TextView tt = (TextView) v.findViewById(R.id.toptext);
             TextView bt = (TextView) v.findViewById(R.id.bottomtext);
             if (tt != null) {
                 tt.setText(String.format("%s (%s)",
-                        stationType.getVehicle(),
-                        stationType.getStation()));
+                        stationType.getTitle(),
+                        stationType.getCompany()));
             }
             if (bt != null) {
-                bt.setText(stationType.getVolume());
+                bt.setText(stationType.getPostcode());
             }
         }
         return v;
