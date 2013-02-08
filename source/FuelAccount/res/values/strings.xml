@@ -3,9 +3,11 @@
 
     <string name="app_name">Fuel Account</string>
     <string name="edit_message">Test Message.</string>
+    <string name="button_save">Save</string>
     <!-- Main Menu -->
-    <string name="menu_main_vehicless">Vehicles</string>
+    <string name="menu_main_vehicles">Vehicles</string>
     <string name="menu_main_stations">Stations</string>
+    <string name="menu_main_purchases">Purchases</string>
     <!-- Vehicles -->
     <string name="vehicle_manufacturer">Manufacturer</string>
     <string name="vehicle_model">Model</string>
@@ -17,5 +19,10 @@
     <string name="station_petrol_company">Petrol Company</string>
     <string name="station_post_code">Post Code</string>
     <string name="button_add_station">Add</string>
-    <string name="button_save">Save</string>
+    <!-- Purchases -->
+    <string name="purchase_volume_litre">ltrs</string>
+    <string name="purchase_price_by_volume_pence">pence/ltr</string>
+    <string name="purchase_price_total">total cost</string>
+    <string name="button_add_purchase">Add</string>
+
 </resources>
