@@ -1,5 +1,6 @@
 package uk.org.mcdonnell.fuelaccount;
 
+import uk.org.mcdonnell.fuelaccount.view.purchase.PurchaseFragment;
 import uk.org.mcdonnell.fuelaccount.view.station.StationFragment;
 import uk.org.mcdonnell.fuelaccount.view.vehicle.VehicleFragment;
 import android.os.Bundle;
@@ -93,6 +94,9 @@ public class FuelAccount extends FragmentActivity {
         case R.id.menu_main_stations:
             showStation();
             return true;
+        case R.id.menu_main_purchases:
+        	showPurchase();
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -109,6 +113,13 @@ public class FuelAccount extends FragmentActivity {
         // Create fragment and give it an argument specifying the article it
         // should show
         StationFragment newFragment = new StationFragment();
+        showFragment(newFragment);
+    }
+
+    private void showPurchase() {
+        // Create fragment and give it an argument specifying the article it
+        // should show
+        PurchaseFragment newFragment = new PurchaseFragment();
         showFragment(newFragment);
     }
 
