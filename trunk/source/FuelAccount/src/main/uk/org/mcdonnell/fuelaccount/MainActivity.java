@@ -86,7 +86,7 @@ public class MainActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-        case R.id.menu_main_vehicless:
+        case R.id.menu_main_vehicles:
             showVehicle();
             return true;
         case R.id.menu_main_stations:
