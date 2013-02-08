@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ExpandableListView
+        android:id="@+id/purchase_list_vehicle"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" >
+    </ExpandableListView>
+
+    <ExpandableListView
+        android:id="@+id/purchase_list_station"
+        android:layout_width="match_parent"
+        android:layout_height="29dp" >
+    </ExpandableListView>
+
+    <EditText
+        android:id="@+id/purchase_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/purchase_volume_litre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/purchase_volume_litre"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/purchase_price_by_volume_pence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/purchase_price_by_volume_pence"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/purchase_price_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/purchase_price_total"
+        android:inputType="numberDecimal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/button_save_purchace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/button_save" >
+        </Button>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listPurchases"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible" >
+
+    </ListView>
+
+</LinearLayout>
