@@ -7,7 +7,7 @@ import android.annotation.SuppressLint;
 public class Configuration {
 
     private enum FileNames {
-        VEHICLES, STATIONS
+        VEHICLES, STATIONS, PURCHASES
     }
 
     @SuppressLint("DefaultLocale")
@@ -20,6 +20,12 @@ public class Configuration {
     @SuppressLint("DefaultLocale")
     public static String getStationsFile() {
         return String.format("%s.%s", FileNames.STATIONS.toString()
+                .toLowerCase(), "xml");
+    }
+
+    @SuppressLint("DefaultLocale")
+    public static String getPurchasesFile() {
+        return String.format("%s.%s", FileNames.PURCHASES.toString()
                 .toLowerCase(), "xml");
     }
 }
