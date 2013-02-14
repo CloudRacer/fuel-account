@@ -1,0 +1,8 @@
+@ECHO OFF
+
+SET PROJECT_FOLDER=%~1
+
+SET BUILD_COMMAND=ant debug
+
+cd "%PROJECT_FOLDER%"
+cmd /C """%BUILD_COMMAND%"""
