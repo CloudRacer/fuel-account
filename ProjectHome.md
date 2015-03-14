@@ -1,0 +1,1 @@
+Record the details of each fuel purchase you make. Keep a list of the vehicles you own and the places you buy fuel from, and record each purchase against a vehicle and a location.
